@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const TheFooter = () => {
+const Footer = () => {
 	return (
 		<footer className="footer__main">
 			<ul className="footer__icons">
@@ -38,4 +38,4 @@ const TheFooter = () => {
 	)
 }
 
-export default TheFooter
+export default Footer

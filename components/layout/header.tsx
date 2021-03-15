@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const TheHeader = () => {
+const Header = () => {
 	const handleClickToggleMenu = () => {
 		const menu = document.querySelector('.navbar__menu')
 		const icons = document.querySelector('.navbar__icons')
@@ -20,26 +20,33 @@ const TheHeader = () => {
 
 			<ul className="navbar__menu">
 				<li>
-					<Link href={'/'}>Home</Link>
+					<Link href={'/'} as="/home">
+						<a>Home</a>
+					</Link>
 				</li>
 				<li>
-					<Link href={'/[pagename]'} as="/gallery">
+					<Link href={'/[id]'} as="/gallery">
 						<a>Gallery</a>
 					</Link>
 				</li>
 				<li>
-					<Link href={'/[pagename]'} as="/weddings">
+					<Link href={'/[id]'} as="/weddings">
 						<a>Weddings</a>
 					</Link>
 				</li>
 				<li>
-					<Link href={'/[pagename]'} as="/faq">
+					<Link href={'/[id]'} as="/faq">
 						<a>FAQ</a>
 					</Link>
 				</li>
 				<li>
-					<Link href={'/[pagename]'} as="/bookings">
+					<Link href={'/[id]'} as="/bookings">
 						<a>Bookings</a>
+					</Link>
+				</li>
+				<li>
+					<Link href={'/[id]'} as="/memberList">
+						<a>회원관리</a>
 					</Link>
 				</li>
 			</ul>
@@ -49,7 +56,7 @@ const TheHeader = () => {
 					<FontAwesomeIcon icon={['fas', 'sign-in-alt']} />
 				</li>
 				<li>
-					<Link href="/[pagename]" as="/memberJoin">
+					<Link href="/[id]" as="/memberJoin">
 						<a>
 							<FontAwesomeIcon icon={['fas', 'user-plus']} />
 						</a>
@@ -64,4 +71,4 @@ const TheHeader = () => {
 	)
 }
 
-export default TheHeader
+export default Header

@@ -2,41 +2,28 @@ import '../styles/globals.scss'
 import '../styles/header.scss'
 import '../styles/footer.scss'
 import { AppProps } from 'next/app'
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
-import TheHeader from '../components/common/theHeader'
-import TheFooter from '../components/common/theFooter'
-import { useRouter } from 'next/router'
-import Head from 'next/head'
+import Header from '../components/layout/header'
+import Footer from '../components/layout/footer'
 
 library.add(fas, fab)
 
-const transPageName = pagename => {
-	if (pagename) {
-		const firstChar = pagename[0]
-		const firstCharUpper = firstChar.toUpperCase()
-		const leftChar = pagename.slice(1, pagename.length)
-		return firstCharUpper + leftChar
-	}
-	return 'Home'
-}
+const client = new ApolloClient({
+	uri: 'http://localhost:8080/graphql',
+	cache: new InMemoryCache(),
+	credentials: 'same-origin',
+})
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-	const router = useRouter()
-	const { pagename } = router.query
-	const resultPageName = transPageName(pagename)
-
 	return (
-		<>
-			<Head>
-				<title>{resultPageName}</title>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
-			<TheHeader></TheHeader>
+		<ApolloProvider client={client}>
+			<Header></Header>
 			<Component {...pageProps} />
-			<TheFooter></TheFooter>
-		</>
+			<Footer></Footer>
+		</ApolloProvider>
 	)
 }
 
