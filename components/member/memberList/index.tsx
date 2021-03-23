@@ -1,43 +1,56 @@
 import React, { useState } from 'react'
 import { useQuery, gql } from '@apollo/client'
 import styles from '../../../styles/Member.module.scss'
+import memberGql from '../../../core/gql/member/memberGql'
+import Head from 'next/head'
+
+type memberGqlTyp = {
+	page: number
+	size: number
+}
 
 const MemberList = () => {
-	const [page, setPage] = useState(0)
-	const [size, setSize] = useState(5)
+	const [pageOptions, setPageOption] = useState({
+		page: 0,
+		size: 5,
+		totalPages: 0,
+	})
 
-	const GET_MEMBERLIST = gql`
-		query {
-			getMemberList(page: ${page}, size: ${size}) {
-				content {
-					memberNo
-					userId
-					email
-					address1
-					address2
-					name
-					postNo
-					profileImg
-				}
-				totalPages
-			}
-		}
-	`
 	const handleClickPage = () => {
-		page === 1 ? setPage(0) : setPage(1)
+		pageOptions.page === 1
+			? setPageOption({
+					...pageOptions,
+					page: 0,
+			  })
+			: setPageOption({
+					...pageOptions,
+					page: 1,
+			  })
+	}
+
+	const setTotalPage = totalPages => {
+		if (pageOptions.totalPages === 0) {
+			setPageOption({
+				...pageOptions,
+				totalPages: totalPages,
+			})
+		}
 	}
 
 	const getMemberList = () => {
-		const { loading, error, data } = useQuery(GET_MEMBERLIST, {
-			variables: { page: page, size: size },
+		const { loading, error, data } = useQuery(memberGql.GET_MEMBERLIST(pageOptions as memberGqlTyp), {
+			variables: { pageOptions: pageOptions },
 		})
 		if (loading) return <p>loading...</p>
 		if (error) return <p>error!</p>
 
-		const totalPages = data.getMemberList.totalPages
+		setTotalPage(data.getMemberList.totalPages)
 
 		return (
 			<div className={styles.member__table}>
+				<div className={styles.total__page}>
+					<h4>총 페이지 수 : {pageOptions.totalPages}개</h4>
+				</div>
 				<table>
 					<thead>
 						<tr>
@@ -80,9 +93,17 @@ const MemberList = () => {
 	}
 	return (
 		<div className={styles.member__body}>
+			<Head>
+				<title>회원 리스트</title>
+				<meta
+					name="viewport"
+					content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no"
+				/>
+			</Head>
 			<div className={styles.member__title}>
 				<h3>회원 목록</h3>
 			</div>
+
 			{getMemberList()}
 		</div>
 	)

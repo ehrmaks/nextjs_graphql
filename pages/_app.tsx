@@ -12,7 +12,7 @@ import Footer from '../components/layout/footer'
 library.add(fas, fab)
 
 const client = new ApolloClient({
-	uri: 'http://localhost:8080/graphql',
+	uri: process.env.NEXT_PUBLIC_API_URL,
 	cache: new InMemoryCache(),
 	credentials: 'same-origin',
 })

@@ -1,0 +1,32 @@
+import { gql } from '@apollo/client'
+
+type memberGqlTyp = {
+	page: number
+	size: number
+}
+
+function GET_MEMBERLIST(pageOptions: memberGqlTyp) {
+	return gql`
+        query {
+            getMemberList(page: ${pageOptions.page}, size: ${pageOptions.size}) {
+                content {
+                    memberNo
+                    userId
+                    email
+                    address1
+                    address2
+                    name
+                    postNo
+                    profileImg
+                }
+                totalPages
+                totalElements
+                size
+            }
+        }
+    `
+}
+
+export default {
+	GET_MEMBERLIST,
+}

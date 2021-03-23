@@ -20,32 +20,32 @@ const Header = () => {
 
 			<ul className="navbar__menu">
 				<li>
-					<Link href={'/'} as="/home">
+					<Link href={'/'}>
 						<a>Home</a>
 					</Link>
 				</li>
 				<li>
-					<Link href={'/[id]'} as="/gallery">
+					<Link href={'/gallery/gallerylist'}>
 						<a>Gallery</a>
 					</Link>
 				</li>
 				<li>
-					<Link href={'/[id]'} as="/weddings">
+					<Link href={'/weddings/weddingslist'}>
 						<a>Weddings</a>
 					</Link>
 				</li>
 				<li>
-					<Link href={'/[id]'} as="/faq">
+					<Link href={'/faq/faqlist'}>
 						<a>FAQ</a>
 					</Link>
 				</li>
 				<li>
-					<Link href={'/[id]'} as="/bookings">
+					<Link href={'/bookings/bookingslist'}>
 						<a>Bookings</a>
 					</Link>
 				</li>
 				<li>
-					<Link href={'/[id]'} as="/memberList">
+					<Link href={'/member/memberlist'}>
 						<a>회원관리</a>
 					</Link>
 				</li>
@@ -56,7 +56,7 @@ const Header = () => {
 					<FontAwesomeIcon icon={['fas', 'sign-in-alt']} />
 				</li>
 				<li>
-					<Link href="/[id]" as="/memberJoin">
+					<Link href="/member/memberjoin">
 						<a>
 							<FontAwesomeIcon icon={['fas', 'user-plus']} />
 						</a>
