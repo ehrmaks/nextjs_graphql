@@ -1,7 +1,7 @@
 import { produce } from 'immer'
 import { handleActions } from 'redux-actions'
 import { takeEvery } from 'redux-saga/effects'
-import createAsyncSaga, { asyncActionCreator, createAsyncAction } from '../../util/reduxUtils'
+import createAsyncSaga, { asyncActionCreator, createAsyncAction } from '@/util/reduxUtils'
 // import { getCurrentUserApi, loginApi } from '../api/saga/auth';
 
 // 0. 더미 데이터

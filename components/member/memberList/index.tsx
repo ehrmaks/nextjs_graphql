@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useQuery, gql } from '@apollo/client'
-import styles from '../../../styles/Member.module.scss'
-import memberGql from '../../../core/gql/member/memberGql'
+import styles from '@/styles/Member.module.scss'
+import memberGql from '@/core/gql/member/memberGql'
 import Head from 'next/head'
 
 type memberGqlTyp = {

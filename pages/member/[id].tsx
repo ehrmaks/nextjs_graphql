@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import MemberList from '../../components/member/memberList'
-import MemberJoin from '../../components/member/memberJoin'
+import MemberList from '@components/member/memberList'
+import MemberJoin from '@components/member/memberJoin'
 
 const Member = () => {
 	const router = useRouter()
