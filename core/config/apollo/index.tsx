@@ -43,7 +43,7 @@ const resetToken = onError(({ graphQLErrors, networkError }) => {
 			console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
 		)
 
-	if (networkError && networkError.name === 'ServerError' && networkError.statusCode === 401) {
+	if (networkError && networkError.name === 'ServerError') {
 		// remove cached token on 401 from the server
 		token = null
 	}
@@ -51,6 +51,7 @@ const resetToken = onError(({ graphQLErrors, networkError }) => {
 
 export const client = new ApolloClient({
 	cache: new InMemoryCache(),
-	link: from([authMiddleware, activityMiddleware, resetToken, httpLink]),
+	// link: from([authMiddleware, activityMiddleware, resetToken, httpLink]),
+	link: httpLink,
 	credentials: 'include',
 })

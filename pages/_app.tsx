@@ -9,15 +9,18 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import Header from '@components/layout/header'
 import Footer from '@components/layout/footer'
+import UserStore from '@/core/store/users'
 
 library.add(fas, fab)
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
 	return (
 		<ApolloProvider client={client}>
-			<Header></Header>
-			<Component {...pageProps} />
-			<Footer></Footer>
+			<UserStore>
+				<Header></Header>
+				<Component {...pageProps} />
+				<Footer></Footer>
+			</UserStore>
 		</ApolloProvider>
 	)
 }

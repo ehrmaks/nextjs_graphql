@@ -53,7 +53,11 @@ const Header = () => {
 
 			<ul className="navbar__icons">
 				<li>
-					<FontAwesomeIcon icon={['fas', 'sign-in-alt']} />
+					<Link href="/member/memberlogin">
+						<a>
+							<FontAwesomeIcon icon={['fas', 'sign-in-alt']} />
+						</a>
+					</Link>
 				</li>
 				<li>
 					<Link href="/member/memberjoin">
