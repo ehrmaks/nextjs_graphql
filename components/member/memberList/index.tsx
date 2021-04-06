@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import styles from '@/styles/Member.module.scss'
 import memberGql from '@/core/gql/member/memberGql'
 import Head from 'next/head'
@@ -44,7 +44,7 @@ const MemberList = () => {
 		if (loading) return <p>loading...</p>
 		if (error) return <p>error!</p>
 
-		setTotalPage(data.getMemberList.totalPages)
+		setTotalPage(data.getMemberList.data.totalPages)
 
 		return (
 			<div className={styles.member__table}>
@@ -65,13 +65,13 @@ const MemberList = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{data.getMemberList.content.map((member, memIdx) => {
+						{data.getMemberList.data.content.map((member, memIdx) => {
 							return (
 								<tr key={memIdx} onClick={handleClickPage}>
-									<td>{member.memberNo}</td>
+									<td>{member.memberId}</td>
 									<td>{member.userId}</td>
 									<td>{member.email}</td>
-									<td>{member.name}</td>
+									<td>{member.userName}</td>
 									<td>{member.address1}</td>
 									<td>{member.address2}</td>
 									<td>{member.postNo ? member.postNo : '없음'}</td>
@@ -81,11 +81,11 @@ const MemberList = () => {
 								</tr>
 							)
 						})}
-						{data.getMemberList.content < 1 ? (
+						{data.getMemberList.data.content.length < 1 && (
 							<tr>
 								<td colSpan={8}>데이터가 없습니다.</td>
 							</tr>
-						) : null}
+						)}
 					</tbody>
 				</table>
 			</div>

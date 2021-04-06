@@ -8,18 +8,18 @@ type memberGqlTyp = {
 function GET_MEMBERLIST(pageOptions: memberGqlTyp) {
 	return gql`
         query {
-            getUserList(page: ${pageOptions.page}, size: ${pageOptions.size}) {
+            getMemberList(page: ${pageOptions.page}, size: ${pageOptions.size}) {
                 success
                 code
                 msg
                 data {
                     content {
-                        memberNo
+                        memberId
                         userId
                         email
                         address1
                         address2
-                        name
+                        userName
                         postNo
                         profileImg
                     }

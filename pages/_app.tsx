@@ -9,19 +9,22 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import Header from '@components/layout/header'
 import Footer from '@components/layout/footer'
-import UserStore from '@/core/store/users'
+import UserStore from '@/core/store/userStore'
+import { CookiesProvider } from 'react-cookie'
 
 library.add(fas, fab)
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
 	return (
-		<ApolloProvider client={client}>
+		<CookiesProvider>
 			<UserStore>
-				<Header></Header>
-				<Component {...pageProps} />
-				<Footer></Footer>
+				<ApolloProvider client={client}>
+					<Header></Header>
+					<Component {...pageProps} />
+					<Footer></Footer>
+				</ApolloProvider>
 			</UserStore>
-		</ApolloProvider>
+		</CookiesProvider>
 	)
 }
 
