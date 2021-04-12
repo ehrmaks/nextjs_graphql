@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
 
-const MemberJoin = () => {
+const MemberLogin = () => {
 	const router = useRouter()
 	const userState = useContext(UserStateContext)
 	const dispatch = useContext(UserDispatchContext)
@@ -69,4 +69,4 @@ const MemberJoin = () => {
 	)
 }
 
-export default MemberJoin
+export default MemberLogin

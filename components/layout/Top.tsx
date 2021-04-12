@@ -3,8 +3,10 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UserStateContext, UserDispatchContext, initialState } from '@/core/store/userStore'
 import { useCookies } from 'react-cookie'
+import { useRouter } from 'next/router'
 
-const Header = () => {
+const Top = () => {
+	const router = useRouter()
 	const userState = useContext(UserStateContext)
 	const dispatch = useContext(UserDispatchContext)
 	const [cookies, , removeCookie] = useCookies(['userInfo'])
@@ -33,6 +35,8 @@ const Header = () => {
 			type: 'SET_INIT_USER',
 			payload: initialState,
 		})
+
+		router.push('/')
 	}
 
 	return (
@@ -75,6 +79,12 @@ const Header = () => {
 				</li>
 			</ul>
 
+			{userState.accessToken && (
+				<div className="navbar__username">
+					<span>{userState.userNm}님</span>
+				</div>
+			)}
+
 			<ul className="navbar__icons">
 				{userState.accessToken ? (
 					<li>
@@ -108,4 +118,4 @@ const Header = () => {
 	)
 }
 
-export default Header
+export default Top

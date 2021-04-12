@@ -1,32 +1,19 @@
-import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
+import React, { useState, useEffect } from 'react'
 import styles from '@/styles/Member.module.scss'
-import memberGql from '@/core/gql/member/memberGql'
-import Head from 'next/head'
-
-type memberGqlTyp = {
-	page: number
-	size: number
-}
+import { GET_MEMBERLIST } from '@/core/gql/member/memberGql'
+import { client } from '@/core/config/apollo'
+import Meta from '@/components/common/Meta'
+import { useRouter } from 'next/router'
 
 const MemberList = () => {
+	const router = useRouter()
 	const [pageOptions, setPageOption] = useState({
 		page: 0,
 		size: 5,
 		totalPages: 0,
 	})
 
-	const handleClickPage = () => {
-		pageOptions.page === 1
-			? setPageOption({
-					...pageOptions,
-					page: 0,
-			  })
-			: setPageOption({
-					...pageOptions,
-					page: 1,
-			  })
-	}
+	const [memberData, setMemberData] = useState([])
 
 	const setTotalPage = totalPages => {
 		if (pageOptions.totalPages === 0) {
@@ -37,16 +24,35 @@ const MemberList = () => {
 		}
 	}
 
-	const getMemberList = () => {
-		const { loading, error, data } = useQuery(memberGql.GET_MEMBERLIST(pageOptions as memberGqlTyp), {
-			variables: { pageOptions: pageOptions },
-		})
-		if (loading) return <p>loading...</p>
-		if (error) return <p>error!</p>
+	useEffect(() => {
+		client
+			.query({
+				query: GET_MEMBERLIST,
+				variables: {
+					page: pageOptions.page,
+					size: pageOptions.size,
+				},
+			})
+			.then(res => {
+				const resData = res.data.getMemberList.data
+				setMemberData(resData.content)
+				setTotalPage(resData.totalPages)
+			})
+			.catch(err => {
+				console.log({ err })
+				if (err.networkError.statusCode === 401) {
+					router.push('/member/memberlogin')
+				}
+			})
+	}, [])
 
-		setTotalPage(data.getMemberList.data.totalPages)
+	return (
+		<div className={styles.member__body}>
+			<Meta title="회원관리 | 회원목록" desc="회원 목록 조회"></Meta>
+			<div className={styles.member__title}>
+				<h3>회원 목록</h3>
+			</div>
 
-		return (
 			<div className={styles.member__table}>
 				<div className={styles.total__page}>
 					<h4>총 페이지 수 : {pageOptions.totalPages}개</h4>
@@ -61,13 +67,13 @@ const MemberList = () => {
 							<th style={{ width: '200px' }}>주소1</th>
 							<th style={{ width: '100px' }}>주소2</th>
 							<th style={{ width: '100px' }}>우편번호</th>
-							<th style={{ width: '100px' }}>프로필</th>
+							{/* <th style={{ width: '100px' }}>프로필</th> */}
 						</tr>
 					</thead>
 					<tbody>
-						{data.getMemberList.data.content.map((member, memIdx) => {
+						{memberData.map(member => {
 							return (
-								<tr key={memIdx} onClick={handleClickPage}>
+								<tr key={member.memberId}>
 									<td>{member.memberId}</td>
 									<td>{member.userId}</td>
 									<td>{member.email}</td>
@@ -75,13 +81,13 @@ const MemberList = () => {
 									<td>{member.address1}</td>
 									<td>{member.address2}</td>
 									<td>{member.postNo ? member.postNo : '없음'}</td>
-									<td>
-										<img src={member.profileImg} alt={member.name} />
-									</td>
+									{/* <td>
+											<img src={member.profileImg} alt={member.name} />
+										</td> */}
 								</tr>
 							)
 						})}
-						{data.getMemberList.data.content.length < 1 && (
+						{memberData.length < 1 && (
 							<tr>
 								<td colSpan={8}>데이터가 없습니다.</td>
 							</tr>
@@ -89,22 +95,6 @@ const MemberList = () => {
 					</tbody>
 				</table>
 			</div>
-		)
-	}
-	return (
-		<div className={styles.member__body}>
-			<Head>
-				<title>회원 리스트</title>
-				<meta
-					name="viewport"
-					content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no"
-				/>
-			</Head>
-			<div className={styles.member__title}>
-				<h3>회원 목록</h3>
-			</div>
-
-			{getMemberList()}
 		</div>
 	)
 }

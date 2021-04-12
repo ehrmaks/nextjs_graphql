@@ -7,8 +7,8 @@ import { client } from '@/core/config/apollo'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
-import Header from '@components/layout/header'
-import Footer from '@components/layout/footer'
+import Top from '@/components/layout/Top'
+import Footer from '@components/layout/Footer'
 import UserStore from '@/core/store/userStore'
 import { CookiesProvider } from 'react-cookie'
 
@@ -19,7 +19,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 		<CookiesProvider>
 			<UserStore>
 				<ApolloProvider client={client}>
-					<Header></Header>
+					<Top></Top>
 					<Component {...pageProps} />
 					<Footer></Footer>
 				</ApolloProvider>

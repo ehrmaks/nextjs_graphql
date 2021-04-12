@@ -43,6 +43,12 @@
   .navbar__toogleBtn {
     display: none;
   }
+
+  .navbar__username {
+    position: absolute;
+    color: white;
+    right: 60px;
+  }
 }
 
 @media screen and (max-width: 768px){
