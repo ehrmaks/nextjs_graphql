@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--bacgound-color);
-  padding: 8px 12px;
+  padding: 8px 32px;
   .navbar__logo {
     font-size: 24px;
     color: var(--text-color);
@@ -32,7 +32,7 @@
     display: flex;
     padding-left: 0;
     li {
-      padding: 8px 12px;
+      padding: 8px 18px;
       width: 24px;
       svg {
         cursor: pointer;

@@ -42,8 +42,15 @@ const Top = () => {
 	return (
 		<nav className="navbar">
 			<div className="navbar__logo">
-				<FontAwesomeIcon className="accusoft" icon={['fab', 'accusoft']} />
-				<Link href={'/'}>Jookbob2 World</Link>
+				{/* <FontAwesomeIcon className="accusoft" icon={['fab', 'accusoft']} /> */}
+				<Link href={'/'}>
+					<a>
+						<div>
+							<img src="/static/images/logo.png" alt="logo" width="20px" />
+							&nbsp;&nbsp;Jookbob2 World
+						</div>
+					</a>
+				</Link>
 			</div>
 
 			<ul className="navbar__menu">
@@ -53,23 +60,8 @@ const Top = () => {
 					</Link>
 				</li>
 				<li>
-					<Link href={'/gallery/gallerylist'}>
-						<a>Gallery</a>
-					</Link>
-				</li>
-				<li>
-					<Link href={'/weddings/weddingslist'}>
-						<a>Weddings</a>
-					</Link>
-				</li>
-				<li>
-					<Link href={'/faq/faqlist'}>
-						<a>FAQ</a>
-					</Link>
-				</li>
-				<li>
-					<Link href={'/bookings/bookingslist'}>
-						<a>Bookings</a>
+					<Link href={'/shop/shoplist'}>
+						<a>Shop</a>
 					</Link>
 				</li>
 				<li>

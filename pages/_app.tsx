@@ -1,3 +1,4 @@
+import 'semantic-ui-css/semantic.min.css'
 import '@/styles/globals.scss'
 import '@/styles/header.scss'
 import '@/styles/footer.scss'
@@ -20,7 +21,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 			<UserStore>
 				<ApolloProvider client={client}>
 					<Top></Top>
-					<Component {...pageProps} />
+					<div style={{ padding: '40px 200px 40px 200px' }}>
+						<Component {...pageProps} />
+					</div>
 					<Footer></Footer>
 				</ApolloProvider>
 			</UserStore>

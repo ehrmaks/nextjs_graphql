@@ -11,6 +11,7 @@ const Member = () => {
 	const { id } = router.query
 
 	if (id === 'memberlist' && !userState.accessToken) {
+		alert('권한이 없습니다. 로그인해 주세요.')
 		router.push('/member/memberlogin')
 	}
 
