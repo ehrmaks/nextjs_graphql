@@ -3,6 +3,8 @@ import { UserStateContext, UserDispatchContext } from '@/core/store/userStore'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useCookies } from 'react-cookie'
+import { Button, Form, Header, Icon } from 'semantic-ui-react'
+import styles from '@/styles/Login.module.scss'
 
 const MemberLogin = () => {
 	const router = useRouter()
@@ -19,53 +21,114 @@ const MemberLogin = () => {
 	const [loginData, setLoginData] = useState({
 		email: '',
 		password: '',
+		message1: '',
+		message2: '',
 	})
 
 	const changeUserData = e => {
 		setLoginData({
 			...loginData,
 			[e.target.name]: e.target.value,
+			message1: '',
+			message2: '',
 		})
 	}
+
+	const validationChk = () => {
+		if (!loginData.email) {
+			setLoginData({
+				...loginData,
+				message1: '아이디를 입력해 주세요.',
+			})
+			return false
+		}
+		if (!loginData.password) {
+			setLoginData({
+				...loginData,
+				message2: '비밀번호를 입력해 주세요.',
+			})
+			return false
+		}
+		return true
+	}
+
 	const handleClickLogin = () => {
-		axios
-			.post(`${process.env.NEXT_PUBLIC_API_URL + '/api/login'}`, loginData)
-			.then(res => {
-				const resData = res.data.data
-				dispatch({ type: 'ADD_USER', payload: resData })
-				router.push('/')
-				setCookie('userInfo', resData)
-			})
-			.catch(err => {
-				console.error(err)
-			})
+		if (validationChk()) {
+			axios
+				.post(`${process.env.NEXT_PUBLIC_API_URL + '/api/login'}`, loginData)
+				.then(res => {
+					const resData = res.data.data
+					dispatch({ type: 'ADD_USER', payload: resData })
+					router.push('/')
+					setCookie('userInfo', resData)
+				})
+				.catch(err => {
+					const errData = err.response.data
+					if (errData.code === 'ESVC005') {
+						setLoginData({
+							...loginData,
+							message1: errData.msg,
+						})
+					} else if (errData.code === 'ESVC022') {
+						setLoginData({
+							...loginData,
+							message1: errData.msg,
+						})
+					}
+				})
+		}
 	}
 
 	return (
-		<div>
+		<>
 			{!userState.accessToken && (
-				<div>
-					<h1>로그인</h1>
-					<div>
-						<input
-							type="text"
-							name="email"
-							placeholder="아이디를 입력해 주세요."
-							value={loginData.email}
-							onChange={changeUserData}
-						/>
-						<input
-							type="password"
-							name="password"
-							placeholder="비밀번호를 입력해 주세요."
-							value={loginData.password}
-							onChange={changeUserData}
-						/>
-						<button onClick={handleClickLogin}>로그인</button>
+				<div className={styles.wrap}>
+					<div className={styles.login_header}>
+						<Header as="h2">Jookbob2 World</Header>
 					</div>
+					<Form>
+						<Form.Field>
+							<div className={styles.login_div}>
+								<input
+									style={{ border: 'none', borderBottom: 'solid 1px #263343', width: 400 }}
+									type="text"
+									name="email"
+									placeholder="아이디를 입력해 주세요."
+									value={loginData.email}
+									onChange={changeUserData}
+								/>
+								{loginData.message1 && (
+									<div className={styles.login_status}>
+										<p>{loginData.message1}</p>
+									</div>
+								)}
+							</div>
+						</Form.Field>
+						<Form.Field>
+							<div className={styles.login_div}>
+								<input
+									style={{ border: 'none', borderBottom: 'solid 1px #263343', width: 400 }}
+									type="password"
+									name="password"
+									placeholder="비밀번호를 입력해 주세요."
+									value={loginData.password}
+									onChange={changeUserData}
+								/>
+								{loginData.message2 && (
+									<div className={styles.login_status}>
+										<p>비밀번호를 확인해 주세요.</p>
+									</div>
+								)}
+							</div>
+						</Form.Field>
+						<Button color="blue" size="huge" onClick={handleClickLogin}>
+							<Icon name="key"></Icon>
+							로그인
+						</Button>
+					</Form>
 				</div>
 			)}
-		</div>
+		</>
 	)
 }
 

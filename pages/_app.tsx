@@ -21,7 +21,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 			<UserStore>
 				<ApolloProvider client={client}>
 					<Top></Top>
-					<div style={{ padding: '40px 200px 40px 200px' }}>
+					<div style={{ padding: '5%' }}>
 						<Component {...pageProps} />
 					</div>
 					<Footer></Footer>

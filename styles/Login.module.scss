@@ -1,0 +1,27 @@
+.wrap {
+    text-align: center;
+    padding: 20px 0px 20px 0px;
+    .login_header {
+        padding-bottom: 55px;
+    }
+    .login_form_field {
+        text-align: '-webkit-center'
+    }
+    .login_div {
+        margin-bottom: 2.5rem;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        .login_status {
+            display: inline-block;
+            width: 380px;
+            text-align: left;
+            p {
+                color: rgba(238, 27, 27, 0.782);
+                padding-top: 10px;
+                
+            }
+        }
+        
+    }
+}

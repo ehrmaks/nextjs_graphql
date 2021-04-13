@@ -28,7 +28,6 @@ class MyDocument extends Document {
 						href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/railscasts.min.css"
 					/>
 				</Head>
-				<Meta></Meta>
 				<body>
 					<Main />
 					<NextScript />
