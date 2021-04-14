@@ -10,14 +10,11 @@ const Member = () => {
 	const userState = useContext(UserStateContext)
 	const { id } = router.query
 
-	if (id === 'memberlist' && !userState.accessToken) {
-		alert('권한이 없습니다. 로그인해 주세요.')
-		router.push('/member/memberlogin')
-	}
+	// if (id === 'memberlist' && !userState.accessToken) router.push('/member/memberlogin')
 
 	return (
 		<div>
-			{id === 'memberlist' ? (
+			{id === 'memberlist' && userState.accessToken ? (
 				<MemberList />
 			) : id === 'memberlogin' ? (
 				<MemberLogin />

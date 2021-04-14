@@ -57,24 +57,39 @@ const MemberLogin = () => {
 			axios
 				.post(`${process.env.NEXT_PUBLIC_API_URL + '/api/login'}`, loginData)
 				.then(res => {
-					const resData = res.data.data
-					dispatch({ type: 'ADD_USER', payload: resData })
-					router.push('/')
-					setCookie('userInfo', resData)
+					const resData = res.data
+					if (res.data.success) {
+						dispatch({ type: 'ADD_USER', payload: resData.data })
+						router.push('/')
+						setCookie('userInfo', resData.data)
+					} else {
+						if (resData.code === 'ESVC005') {
+							setLoginData({
+								...loginData,
+								message1: resData.msg,
+							})
+						} else if (resData.code === 'ESVC022') {
+							setLoginData({
+								...loginData,
+								message1: resData.msg,
+							})
+						}
+					}
 				})
 				.catch(err => {
-					const errData = err.response.data
-					if (errData.code === 'ESVC005') {
-						setLoginData({
-							...loginData,
-							message1: errData.msg,
-						})
-					} else if (errData.code === 'ESVC022') {
-						setLoginData({
-							...loginData,
-							message1: errData.msg,
-						})
-					}
+					console.log(err)
+					// const errData = err.response.data
+					// if (errData.code === 'ESVC005') {
+					// 	setLoginData({
+					// 		...loginData,
+					// 		message1: errData.msg,
+					// 	})
+					// } else if (errData.code === 'ESVC022') {
+					// 	setLoginData({
+					// 		...loginData,
+					// 		message1: errData.msg,
+					// 	})
+					// }
 				})
 		}
 	}
@@ -121,7 +136,7 @@ const MemberLogin = () => {
 								)}
 							</div>
 						</Form.Field>
-						<Button color="blue" size="huge" onClick={handleClickLogin}>
+						<Button color="blue" size="huge" onClick={() => handleClickLogin()}>
 							<Icon name="key"></Icon>
 							로그인
 						</Button>

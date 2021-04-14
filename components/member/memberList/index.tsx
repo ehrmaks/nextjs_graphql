@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 
 const MemberList = () => {
 	const router = useRouter()
+
 	const [pageOptions, setPageOption] = useState({
 		page: 0,
 		size: 5,
@@ -39,7 +40,6 @@ const MemberList = () => {
 				setTotalPage(resData.totalPages)
 			})
 			.catch(err => {
-				console.log({ err })
 				if (err.networkError.statusCode === 401) {
 					router.push('/member/memberlogin')
 				}

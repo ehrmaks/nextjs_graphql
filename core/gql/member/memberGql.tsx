@@ -1,10 +1,5 @@
 import { gql } from '@apollo/client'
 
-type memberGqlTyp = {
-	page: number
-	size: number
-}
-
 export const GET_MEMBERLIST = gql`
 	query getMemberList($page: Int!, $size: Int!) {
 		getMemberList(page: $page, size: $size) {
@@ -30,4 +25,13 @@ export const GET_MEMBERLIST = gql`
 	}
 `
 
-// export { GET_MEMBERLIST }
+export const LOGOUT_MEMBER = gql`
+	mutation {
+		logoutMember {
+			code
+			data
+			msg
+			success
+		}
+	}
+`

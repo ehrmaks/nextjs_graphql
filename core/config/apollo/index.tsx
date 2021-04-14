@@ -1,8 +1,7 @@
 import { ApolloClient, HttpLink, ApolloLink, InMemoryCache, from } from '@apollo/client'
-// import { setContext } from '@apollo/client/link/context'
-// import { onError } from '@apollo/client/link/error'
+import { onError } from '@apollo/client/link/error'
 
-function getCookie(name) {
+function getCookie(name: string) {
 	//가져올 쿠키의 이름을 파라미터 값으로 받고
 	let nameOfCookie = name + '=' //쿠키는 "쿠키=값" 형태로 가지고 있어서 뒤에 있는 값을 가져오기 위해 = 포함
 	let x = 0
@@ -47,35 +46,21 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 	return forward(operation)
 })
 
-// const activityMiddleware = new ApolloLink((operation, forward) => {
-// 	console.log('activity mid')
-// 	// add the recent-activity custom header to the headers
-// 	operation.setContext(({ headers = {} }) => ({
-// 		headers: {
-// 			...headers,
-// 			'recent-activity': localStorage.getItem('lastOnlineTime') || null,
-// 		},
-// 	}))
+const errorResponse = onError(({ graphQLErrors, networkError }) => {
+	console.log(graphQLErrors)
+	console.log(networkError)
+	if (graphQLErrors)
+		graphQLErrors.map(({ message, locations, path }) =>
+			console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
+		)
 
-// 	return forward(operation)
-// })
-
-// const resetToken = onError(({ graphQLErrors, networkError }) => {
-// 	console.log(graphQLErrors)
-// 	console.log(networkError)
-// 	if (graphQLErrors)
-// 		graphQLErrors.map(({ message, locations, path }) =>
-// 			console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
-// 		)
-
-// 	if (networkError && networkError.name === 'ServerError') {
-// 		// remove cached token on 401 from the server
-// 		token = null
-// 	}
-// })
+	if (networkError && networkError.name === 'ServerError') {
+		// remove cached token on 401 from the server
+	}
+})
 
 export const client = new ApolloClient({
 	cache: new InMemoryCache(),
-	link: from([authMiddleware, httpLink]),
+	link: from([authMiddleware, errorResponse, httpLink]),
 	credentials: 'include',
 })

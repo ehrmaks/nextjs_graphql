@@ -4,19 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UserStateContext, UserDispatchContext, initialState } from '@/core/store/userStore'
 import { useCookies } from 'react-cookie'
 import { useRouter } from 'next/router'
+import { client } from '@/core/config/apollo'
+import { LOGOUT_MEMBER } from '@/core/gql/member/memberGql'
 
 const Top = () => {
 	const router = useRouter()
 	const userState = useContext(UserStateContext)
 	const dispatch = useContext(UserDispatchContext)
-	const [cookies, , removeCookie] = useCookies(['userInfo'])
-
-	useEffect(() => {
-		// 로그인 상태라면 쿠키의 정보를 스토어에 저장
-		if (cookies.userInfo) dispatch({ type: 'ADD_USER', payload: cookies.userInfo })
-		// 로그인 정보가 쿠키에 없다면 유저 정보 초기화
-		else dispatch({ type: 'SET_INIT_USER', payload: initialState })
-	}, [])
+	const [, , removeCookie] = useCookies(['userInfo'])
 
 	const handleClickToggleMenu = () => {
 		const menu = document.querySelector('.navbar__menu')
@@ -27,16 +22,27 @@ const Top = () => {
 	}
 
 	const signOut = () => {
-		// 쿠키를 지움
-		removeCookie('userInfo')
+		client
+			.mutate({
+				mutation: LOGOUT_MEMBER,
+			})
+			.then(res => {
+				if (res.data.logoutMember.success) {
+					// 쿠키를 지움
+					removeCookie('userInfo')
 
-		// 스토어의 유저정보를 초기화 시킴
-		dispatch({
-			type: 'SET_INIT_USER',
-			payload: initialState,
-		})
+					// 스토어의 유저정보를 초기화 시킴
+					dispatch({
+						type: 'SET_INIT_USER',
+						payload: initialState,
+					})
 
-		router.push('/')
+					router.push('/')
+				}
+			})
+			.catch(err => {
+				console.log(err)
+			})
 	}
 
 	return (
@@ -80,7 +86,7 @@ const Top = () => {
 			<ul className="navbar__icons">
 				{userState.accessToken ? (
 					<li>
-						<FontAwesomeIcon icon={['fas', 'sign-out-alt']} onClick={signOut} />
+						<FontAwesomeIcon icon={['fas', 'sign-out-alt']} onClick={() => signOut()} />
 					</li>
 				) : (
 					<li>
