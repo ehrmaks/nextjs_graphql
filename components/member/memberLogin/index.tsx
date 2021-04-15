@@ -61,7 +61,12 @@ const MemberLogin = () => {
 					if (res.data.success) {
 						dispatch({ type: 'ADD_USER', payload: resData.data })
 						router.push('/')
-						setCookie('userInfo', resData.data)
+
+						setCookie('userInfo', resData.data, {
+							expires: new Date(new Date().getTime() + 3600000),
+							domain: location.href.includes('localhost') ? 'localhost' : process.env.NEXT_COOKIE_DOMAIN,
+							path: '/',
+						})
 					} else {
 						if (resData.code === 'ESVC005') {
 							setLoginData({

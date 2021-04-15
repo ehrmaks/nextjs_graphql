@@ -45,27 +45,17 @@ const UserInfoReducer = (state: UserState, { type, payload }: UserAction): UserS
 }
 
 const UserStore = ({ children }: { children: React.ReactNode }) => {
-	const [render, setRender] = useState(false)
 	const [state, dispatch] = useReducer(UserInfoReducer, initialState)
 	const [cookies, , removeCookie] = useCookies(['userInfo'])
 	const router = useRouter()
 
 	useEffect(() => {
-		let authPathCnt = 0
-
-		authPathList.forEach(path => {
-			if (router.asPath === path) ++authPathCnt
-		})
-
-		if (authPathCnt > 0) {
-			validateAccessToken()
-		}
+		if (authPathList.includes(router.asPath)) validateAccessToken()
 	}, [router.asPath])
 
 	useEffect(() => {
 		// 로그인 상태라면 쿠키의 정보를 스토어에 저장
 		if (cookies.userInfo) {
-			setRender(true)
 			// 최초에 토큰이 존재한다면 토큰 유효성 검사 후 유저 정보 저장
 			if (validateAccessToken()) dispatch({ type: 'ADD_USER', payload: cookies.userInfo })
 			else dispatch({ type: 'SET_INIT_USER', payload: initialState })
@@ -78,7 +68,7 @@ const UserStore = ({ children }: { children: React.ReactNode }) => {
 		let accessToken
 		if (cookies.userInfo) accessToken = cookies.userInfo.accessToken
 
-		if (!accessToken && !render) {
+		if (!accessToken) {
 			// 로그인 페이지로 이동
 			router.push('/member/memberlogin')
 			alert('권한이 없습니다. 로그인해 주세요.')
@@ -106,7 +96,10 @@ const UserStore = ({ children }: { children: React.ReactNode }) => {
 	// 인증정보 만료 됐을 경우 실행되는 함수
 	function credentialExpiration() {
 		// 쿠키를 지움
-		removeCookie('userInfo')
+		removeCookie('userInfo', {
+			domain: location.href.includes('localhost') ? 'localhost' : process.env.NEXT_COOKIE_DOMAIN,
+			path: '/',
+		})
 
 		// user state 초기화
 		dispatch({

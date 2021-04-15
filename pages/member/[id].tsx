@@ -10,8 +10,6 @@ const Member = () => {
 	const userState = useContext(UserStateContext)
 	const { id } = router.query
 
-	// if (id === 'memberlist' && !userState.accessToken) router.push('/member/memberlogin')
-
 	return (
 		<div>
 			{id === 'memberlist' && userState.accessToken ? (

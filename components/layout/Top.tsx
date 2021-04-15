@@ -29,8 +29,10 @@ const Top = () => {
 			.then(res => {
 				if (res.data.logoutMember.success) {
 					// 쿠키를 지움
-					removeCookie('userInfo')
-
+					removeCookie('userInfo', {
+						domain: location.href.includes('localhost') ? 'localhost' : process.env.NEXT_COOKIE_DOMAIN,
+						path: '/',
+					})
 					// 스토어의 유저정보를 초기화 시킴
 					dispatch({
 						type: 'SET_INIT_USER',
