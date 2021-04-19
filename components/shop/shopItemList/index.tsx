@@ -4,14 +4,7 @@ import styles from '@/styles/ShopList.module.scss'
 import Link from 'next/link'
 
 type ListProps = {
-	list: Array<{
-		id: number
-		image_link: string
-		name: string
-		category: string
-		product_type: string
-		price: number
-	}>
+	list: Array<{ id: number; image_link: string; name: string; category: string; product_type: string; price: number }>
 }
 
 export default function ShopItemList({ list }: ListProps) {
